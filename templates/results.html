@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - NewsFind</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body class="results-page">
+    <header class="header">
+        <div class="header-container-fluid">
+            <a href="/" class="logo-small">Solano Engine</a>
+            <form action="/search" method="get" class="search-form-header">
+                <button type="submit" class="search-btn-header">
+                    <i class="ph ph-magnifying-glass"></i>
+                </button>
+                <input type="text" name="q" class="search-input-header" value="{{ query }}"
+                    placeholder="Search news...">
+            </form>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <aside class="sidebar">
+            {% if metrics %}
+            <div class="metrics-panel-vertical">
+                <div class="metrics-title">
+                    <i class="ph ph-chart-bar"></i> Evaluation Metrics
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">Precision@10</span>
+                    <span class="metric-value">{{ (metrics.precision_at_k * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">Recall (Est.)</span>
+                    <span class="metric-value">{{ (metrics.recall_estimate * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">F1-Score</span>
+                    <span class="metric-value">{{ (metrics.f1_score * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">MAP</span>
+                    <span class="metric-value">{{ (metrics.avg_precision * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">MRR</span>
+                    <span class="metric-value">{{ (metrics.mrr * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">NDCG</span>
+                    <span class="metric-value">{{ (metrics.ndcg * 100)|round(2) }}%</span>
+                </div>
+
+                <div class="metric-item">
+                    <span class="metric-label">Relevant</span>
+                    <span class="metric-value">{{ metrics.relevant_retrieved }}/{{ metrics.total_retrieved }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </aside>
+
+        <main class="content-area">
+            {% if error %}
+            <div class="error-box">
+                <p><i class="ph ph-warning-circle"></i> {{ error }}</p>
+            </div>
+            {% elif results %}
+            <div class="results-info">
+                <div class="search-meta-row">
+                    {% if is_boolean %}
+                    <span class="search-type-badge boolean">
+                        <i class="ph ph-intersect"></i> Boolean Search
+                    </span>
+                    {% else %}
+                    <span class="search-type-badge tfidf">
+                        <i class="ph ph-lightning"></i> TF-IDF Ranking
+                    </span>
+                    {% endif %}
+                    <span class="results-count">Found <strong>{{ num_results }}</strong> results for <span
+                            class="query-highlight">"{{ query }}"</span></span>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                {% for result in results %}
+                <div class="result-item">
+                    <div class="result-meta-top">
+                        <span class="tag-read-time"><i class="ph ph-clock"></i> {{ result.read_time }} min read</span>
+                        <span class="tag-score"><i class="ph ph-chart-line-up"></i> {{ (result.score * 100)|int
+                            }}%</span>
+                    </div>
+                    <div class="result-main">
+                        <a href="javascript:void(0)" class="result-link">
+                            <h3 class="result-title">{{ result.title }}</h3>
+                        </a>
+                        <p class="result-snippet">{{ result.content }}</p>
+                        <div class="result-footer">
+                            <span class="result-date"><i class="ph ph-calendar-blank"></i> {{ result.date }}</span>
+                        </div>
+                    </div>
+
+                    {% if result.related %}
+                    <div class="related-articles">
+                        <div class="related-header">Related</div>
+                        <ul class="related-list">
+                            {% for related in result.related %}
+                            <li class="related-item">
+                                <a href="javascript:void(0)">
+                                    <i class="ph ph-arrow-elbow-down-right"></i> {{ related }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-results-box">
+                <p><i class="ph ph-warning-circle"></i> No results found for your query.</p>
+                <p style="font-size: 0.9rem; margin-top: 8px;">Try checking your spelling or using different keywords.
+                </p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>Advanced IR System</p>
+    </footer>
+</body>
+
+</html>

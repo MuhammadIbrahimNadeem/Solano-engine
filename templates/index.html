@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsFind</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body class="home-page">
+    <div class="container-home">
+        <div class="logo-section">
+            <h1 class="logo">Solano Engine</h1>
+        </div>
+
+        <div class="search-container">
+            <form method="GET" action="/search" class="search-form">
+                <div class="search-input-wrapper">
+                    <button type="submit" class="search-icon">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </button>
+                    <input type="text" name="q" placeholder="Search news articles..." class="search-input" autofocus
+                        required>
+                </div>
+            </form>
+        </div>
+
+        <div class="tips">
+            <p>
+                <span><i class="ph ph-text-t"></i> Regular: <code>python technology</code></span>
+                <span><i class="ph ph-intersect"></i> Boolean: <code>python AND AI</code></span>
+                <span><i class="ph ph-minus-circle"></i> Exclude: <code>technology NOT sports</code></span>
+            </p>
+        </div>
+
+        <div class="stats-home">
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.num_docs }}</div>
+                <div class="stat-label">Articles</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.vocab_size }}</div>
+                <div class="stat-label">Terms</div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer-home">
+        <p>Advanced IR System</p>
+    </footer>
+</body>
+
+</html>
