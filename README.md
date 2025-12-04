@@ -30,7 +30,7 @@ Solano Engine is a local, lightweight Information Retrieval (IR) system designed
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 1.  **Clone the Repository** (or unzip the project folder):
     ```bash
@@ -58,7 +58,7 @@ Solano Engine is a local, lightweight Information Retrieval (IR) system designed
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 1.  **Start the Application:**
     ```bash
@@ -67,7 +67,7 @@ Solano Engine is a local, lightweight Information Retrieval (IR) system designed
 
 2.  **Access the Search Engine:**
     Open your web browser and navigate to:
-    👉 **http://localhost:5001**
+   **http://localhost:5001**
 
 ---
 
